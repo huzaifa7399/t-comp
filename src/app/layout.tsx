@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { ThemeProvider } from "@mui/material";
+import { Container, ThemeProvider } from "@mui/material";
 import theme from "@/theme/theme";
 import { Footer, Header } from "@/components";
 
@@ -29,7 +29,9 @@ export default function RootLayout({
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
             <Header />
-            {children}
+            <Container maxWidth="xl" sx={{ pt: 4, pb: 6 }}>
+              {children}
+            </Container>
             <Footer />
           </ThemeProvider>
         </AppRouterCacheProvider>
