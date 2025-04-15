@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import {
   Card,
   CardContent,
@@ -26,7 +26,7 @@ type ProductCardProps = {
   product: Product;
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: FC<ProductCardProps> = ({ product }) => {
   return (
     <Card
       variant="outlined"
@@ -38,7 +38,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         justifyContent: "space-between",
         borderRadius: "8px",
         backgroundColor: "#fff",
-        border: "0.66px solid #B5B5B566",
+        border: {
+          xs: "0.66px solid #000",
+          sm: "0.66px solid #000",
+          md: "0.66px solid #B5B5B566",
+        },
       }}
     >
       <Box

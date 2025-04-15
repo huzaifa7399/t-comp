@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { FC } from "react";
 import {
   Box,
   IconButton,
@@ -13,7 +13,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import Image from "next/image";
 
-const Footer = () => {
+const Footer: FC = () => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("md")
   );

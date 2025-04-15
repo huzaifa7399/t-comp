@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { Container, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import theme from "@/theme/theme";
 import { Footer, Header } from "@/components";
+import LayoutContainer from "@/components/layout-container";
+import { StoreProvider } from "@/context";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,11 +30,11 @@ export default function RootLayout({
       <body className={`${inter.variable} antialiased`}>
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
-            <Header />
-            <Container maxWidth="xl" sx={{ pt: 4, pb: 6 }}>
-              {children}
-            </Container>
-            <Footer />
+            <StoreProvider>
+              <Header />
+              <LayoutContainer>{children}</LayoutContainer>
+              <Footer />
+            </StoreProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>

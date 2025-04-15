@@ -1,5 +1,6 @@
 "use client";
 
+import { useStore } from "@/context";
 import {
   Box,
   Divider,
@@ -10,13 +11,13 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
-const Header = () => {
+const Header: FC = () => {
+  const { isFilterOpen, handleFilterToggle } = useStore();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("md")
   );
-
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] =
     useState<boolean>(false);
 
@@ -27,6 +28,19 @@ const Header = () => {
   useEffect(() => {
     setIsHamburgerMenuOpen(false);
   }, [isMobile]);
+
+  useEffect(() => {
+    document.body.style.overflow =
+      isFilterOpen || isHamburgerMenuOpen ? "hidden" : "";
+    if (isFilterOpen || isHamburgerMenuOpen) {
+      // Prevent body scroll but allow fixed element to scroll
+      // document.body.style.position = "fixed";
+      // document.body.style.top = `-${window.scrollY}px`;
+      // document.body.style.left = "0";
+      // document.body.style.right = "0";
+      // document.body.style.overflow = "hidden";
+    }
+  }, [isFilterOpen, isHamburgerMenuOpen]);
 
   return (
     <Box bgcolor="primary.light" position="relative" zIndex={10}>
@@ -115,7 +129,7 @@ const Header = () => {
           </Stack>
         ) : (
           <Stack direction="row" spacing={"12px"} alignItems="center">
-            {!isHamburgerMenuOpen && (
+            {!isHamburgerMenuOpen && !isFilterOpen && (
               <Link underline="none">
                 <Image
                   src="/sample-avatar.svg"
@@ -125,7 +139,7 @@ const Header = () => {
                 />
               </Link>
             )}
-            {!isHamburgerMenuOpen && (
+            {!isHamburgerMenuOpen && !isFilterOpen && (
               <Link
                 underline="none"
                 sx={{
@@ -142,15 +156,18 @@ const Header = () => {
                 Create account
               </Link>
             )}
-            <Link underline="none" onClick={handleMenuToggle}>
+            <Link
+              underline="none"
+              onClick={isFilterOpen ? handleFilterToggle : handleMenuToggle}
+            >
               <Image
                 src={
-                  isHamburgerMenuOpen
+                  isHamburgerMenuOpen || isFilterOpen
                     ? "/cross-icon.svg"
                     : "/hamburger-icon.svg"
                 }
-                width={isHamburgerMenuOpen ? 15 : 20}
-                height={isHamburgerMenuOpen ? 15 : 20}
+                width={isHamburgerMenuOpen || isFilterOpen ? 15 : 20}
+                height={isHamburgerMenuOpen || isFilterOpen ? 15 : 20}
                 alt="menu-toggle"
               />
             </Link>
@@ -167,6 +184,7 @@ const Header = () => {
           height="calc(100vh - 48px)"
           bgcolor="background.default"
           zIndex={9}
+          sx={{ overflow: "hidden" }}
         >
           <Stack height="100%" justifyContent="space-between">
             <Stack spacing="16px" padding="12px 8px">

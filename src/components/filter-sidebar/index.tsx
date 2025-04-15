@@ -1,4 +1,6 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+"use client";
+import React, { FC } from "react";
 import {
   Box,
   Typography,
@@ -10,9 +12,19 @@ import {
   Divider,
   Slider,
   TextField,
+  Stack,
 } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
 
-const brands = ["All", "Lenovo", "Microsoft", "Apple", "Dell", "Hp"];
+const brands = [
+  { name: "All", quantity: 500 },
+  { name: "Lenovo", quantity: 500 },
+  { name: "Microsoft", quantity: 22 },
+  { name: "Apple", quantity: 232 },
+  { name: "Dell", quantity: 32 },
+  { name: "Hp", quantity: 112 },
+];
+
 const priceMarks = [
   { value: 1000, label: "AED: 1k" },
   { value: 2000, label: "2k" },
@@ -21,7 +33,15 @@ const priceMarks = [
   { value: 5000, label: "5k" },
 ];
 
-const FilterSidebar = () => {
+const priceRanges = [
+  { value: 1000, label: "AED: 1k to 2k" },
+  { value: 2000, label: "AED: 2k to 3k" },
+  { value: 3000, label: "AED: 3k to 4k" },
+  { value: 4000, label: "AED: 4k to 5k" },
+  { value: 5000, label: "AED: 5k to 6k" },
+];
+
+const FilterSidebar: FC = () => {
   return (
     <Box
       sx={{
@@ -30,43 +50,111 @@ const FilterSidebar = () => {
         mb: { xs: 3, md: 0 },
       }}
     >
+      <Typography
+        variant="h4"
+        fontWeight="bold"
+        mb={1.5}
+        sx={{
+          textDecoration: "underline",
+        }}
+      >
+        Reset all filters
+      </Typography>
+      <Stack direction="row" spacing={1} mb={4} alignItems="center">
+        <Typography
+          bgcolor="primary.main"
+          color="background.default"
+          variant="h4"
+          fontWeight={600}
+          p="4px 10px"
+          borderRadius={1}
+        >
+          223
+        </Typography>
+        <Typography color="text.primary" variant="h4" fontWeight={600}>
+          Auctions
+        </Typography>
+        <Typography color="primary.main" variant="h4" fontWeight={600}>
+          Show all
+        </Typography>
+      </Stack>
       {/* Sort */}
-      <Typography variant="subtitle1" fontWeight="bold" mb={1}>
+      <Typography variant="h4" fontWeight="bold" mb={1}>
         Sort
       </Typography>
       <FormControl component="fieldset" fullWidth>
-        <RadioGroup defaultValue="current">
-          <FormControlLabel value="best" control={<Radio />} label="Best fit" />
-          <FormControlLabel
-            value="current"
-            control={<Radio />}
-            label="Current bid"
-          />
-          <FormControlLabel
-            value="closing"
-            control={<Radio />}
-            label="Closing soon"
-          />
-          <FormControlLabel
-            value="latest"
-            control={<Radio />}
-            label="Latest online"
-          />
+        <RadioGroup defaultValue="current" name="sort-options">
+          {[
+            { label: "Best fit", value: "best" },
+            { label: "Current bid", value: "current" },
+            { label: "Closing soon", value: "closing" },
+            { label: "Latest online", value: "latest" },
+          ].map((option) => (
+            <FormControlLabel
+              key={option.value}
+              value={option.value}
+              control={<Radio />}
+              label={<Typography variant="h4">{option.label}</Typography>}
+            />
+          ))}
         </RadioGroup>
       </FormControl>
 
       <Divider sx={{ my: 2 }} />
 
       {/* Brand */}
-      <Typography variant="subtitle1" fontWeight="bold" mb={1}>
+      <Typography variant="h4" fontWeight="bold" mb={1}>
         Brand
       </Typography>
       <FormControl component="fieldset" fullWidth>
-        {brands.map((brand, index) => (
+        {brands.map(({ name, quantity }, index) => (
           <FormControlLabel
             key={index}
-            control={<Checkbox defaultChecked={index === 0} />}
-            label={brand}
+            control={
+              <Checkbox
+                icon={
+                  <Box
+                    sx={{
+                      width: 16,
+                      height: 16,
+                      border: "1px solid #b5b5b5",
+                      borderRadius: "4px",
+                      backgroundColor: "#fff",
+                    }}
+                  />
+                }
+                checkedIcon={
+                  <CheckIcon
+                    sx={{
+                      color: "#000",
+                    }}
+                  />
+                }
+                sx={{
+                  color: "#b5b5b5",
+                  "&.Mui-checked": {
+                    color: "#04B1E9",
+                  },
+                  "& .MuiSvgIcon-root": {
+                    fontSize: 16,
+                    borderRadius: "4px",
+                    border: "none",
+                  },
+                  "&.Mui-checked .MuiSvgIcon-root": {
+                    border: "1px solid #000",
+                  },
+                }}
+                defaultChecked={index === 0}
+              />
+            }
+            label={
+              <Typography variant="h4">
+                {name}{" "}
+                <span style={{ marginLeft: 6, color: "#b5b5b5" }}>
+                  ({quantity})
+                </span>{" "}
+              </Typography>
+            }
           />
         ))}
       </FormControl>
@@ -74,31 +162,88 @@ const FilterSidebar = () => {
       <Divider sx={{ my: 2 }} />
 
       {/* Price */}
-      <Typography variant="subtitle1" fontWeight="bold" mb={1}>
+      <Typography variant="h4" fontWeight="bold" mb={1}>
         Price
       </Typography>
-      <Slider
+      <FormControl component="fieldset" fullWidth>
+        {priceRanges.map(({ value, label }, index) => (
+          <FormControlLabel
+            key={index}
+            control={
+              <Checkbox
+                onClick={() => console.log(value)}
+                icon={
+                  <Box
+                    sx={{
+                      width: 16,
+                      height: 16,
+                      border: "1px solid #b5b5b5",
+                      borderRadius: "4px",
+                      backgroundColor: "#fff",
+                    }}
+                  />
+                }
+                checkedIcon={
+                  <CheckIcon
+                    sx={{
+                      color: "#000",
+                    }}
+                  />
+                }
+                sx={{
+                  color: "#b5b5b5",
+                  "&.Mui-checked": {
+                    color: "#04B1E9",
+                  },
+                  "& .MuiSvgIcon-root": {
+                    fontSize: 16,
+                    borderRadius: "4px",
+                    border: "none",
+                  },
+                  "&.Mui-checked .MuiSvgIcon-root": {
+                    border: "1px solid #000",
+                  },
+                }}
+                defaultChecked={index === 0}
+              />
+            }
+            label={<Typography variant="h4">{label}</Typography>}
+          />
+        ))}
+      </FormControl>
+      {/* <Slider
         defaultValue={[1000, 5000]}
         min={500}
         max={6000}
         step={100}
         marks={priceMarks}
         valueLabelDisplay="auto"
-      />
-      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
+      /> */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "start",
+          gap: "11px",
+          mt: 1,
+          alignItems: "center",
+        }}
+      >
         <TextField
-          label="Min"
+          placeholder="Min"
           size="small"
           type="number"
           variant="outlined"
-          sx={{ width: "45%" }}
+          sx={{ width: "97px" }}
+          inputProps={{ min: 0 }}
         />
+        <span style={{ color: "#b5b5b5" }}>-</span>
         <TextField
-          label="Max"
+          placeholder="Max"
           size="small"
           type="number"
+          sx={{ width: "97px" }}
           variant="outlined"
-          sx={{ width: "45%" }}
+          inputProps={{ min: 0 }}
         />
       </Box>
     </Box>
