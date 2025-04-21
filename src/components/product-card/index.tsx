@@ -9,6 +9,7 @@ import {
   Link,
 } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type Product = {
   id: string;
@@ -27,6 +28,13 @@ type ProductCardProps = {
 };
 
 const ProductCard: FC<ProductCardProps> = ({ product }) => {
+  const router = useRouter();
+
+  const handleProductClick = (product: Product) => {
+    router.push("/product/" + product.id);
+    console.log("Product clicked", product.id);
+  };
+
   return (
     <Card
       variant="outlined"
@@ -47,12 +55,14 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
     >
       <Box
         sx={{
+          cursor: "pointer",
           display: "flex",
           justifyContent: "center",
           px: 4,
           py: 1,
           height: "180px",
         }}
+        onClick={() => handleProductClick(product)}
       >
         <Image
           height="160"
@@ -62,7 +72,10 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
         />
       </Box>
 
-      <CardContent sx={{ flexGrow: 1, px: 0 }}>
+      <CardContent
+        sx={{ flexGrow: 1, px: 0, cursor: "pointer" }}
+        onClick={() => handleProductClick(product)}
+      >
         <Typography variant="h4" fontWeight={600} sx={{ mb: 1, px: 1.5 }}>
           {product.title}
         </Typography>
@@ -134,12 +147,15 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
         }}
       >
         <Link
+          onClick={() => {
+            console.log("Bid now clicked", product.id);
+          }}
           underline="none"
           sx={{
             backgroundColor: "primary.main",
             color: "white",
             py: "12px",
-            width: "100%",
+            width: "221px",
             textAlign: "center",
             borderRadius: "100px",
             fontSize: "14px",
