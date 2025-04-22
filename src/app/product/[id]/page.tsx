@@ -7,6 +7,7 @@ import SellerInfo from "@/components/seller-info";
 import ItemSpecifics from "@/components/item-specifics";
 import Reviews from "@/components/reviews";
 import dynamic from "next/dynamic";
+import SearchHeader from "@/components/search-header";
 
 const ProductImageCarousel = dynamic(
   () => import("@/components/product-image-carousel"),
@@ -28,15 +29,16 @@ const productData = {
 const ProductPage: React.FC = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
+      <SearchHeader />
       {/* Top Section: Images + Info */}
       <Grid container spacing={4}>
         {/* Images */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <ProductImageCarousel images={productData.images} />
         </Grid>
 
         {/* Info & Price */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <ProductInfo
             title={productData.title}
             condition={productData.condition}
@@ -50,14 +52,14 @@ const ProductPage: React.FC = () => {
       {/* Seller Info + Item Specifics */}
       <Box mt={5}>
         <Grid container spacing={4}>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <SellerInfo
               sellerName={productData.sellerName}
               location={productData.location}
               registrationDate={productData.registrationDate}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <ItemSpecifics />
           </Grid>
         </Grid>

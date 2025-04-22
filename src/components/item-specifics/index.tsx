@@ -39,7 +39,7 @@ const ItemSpecifics: React.FC = () => {
 
       <Grid container spacing={2}>
         {specifics.map((item, idx) => (
-          <Grid item xs={12} sm={6} key={idx}>
+          <Grid size={{ xs: 12, md: 6 }} key={idx}>
             <Typography variant="body2" color="text.secondary">
               <strong>{item.label}:</strong> {item.value}
             </Typography>

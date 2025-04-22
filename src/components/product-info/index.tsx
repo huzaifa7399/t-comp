@@ -21,7 +21,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   return (
     <Grid container spacing={4} mt={2}>
       {/* Left: Info Section */}
-      <Grid item xs={12} md={8}>
+      <Grid size={{ xs: 12, md: 8 }}>
         <Stack spacing={2}>
           <Typography
             variant="h5"
@@ -48,7 +48,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
       </Grid>
 
       {/* Right: Price & Actions */}
-      <Grid item xs={12} md={4}>
+      <Grid size={{ xs: 12, md: 4 }}>
         <Stack spacing={2} alignItems={{ xs: "stretch", md: "flex-end" }}>
           <Typography
             variant="h4"
