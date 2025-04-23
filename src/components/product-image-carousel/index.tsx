@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
-import { Box, Stack } from "@mui/material";
+import React, { useRef } from "react";
+import { Box, Stack, Theme, Typography, useMediaQuery } from "@mui/material";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
+import type SplideClass from "@splidejs/splide";
 import Image from "next/image";
 
 interface ProductImageCarouselProps {
@@ -13,19 +14,30 @@ interface ProductImageCarouselProps {
 const ProductImageCarousel: React.FC<ProductImageCarouselProps> = ({
   images,
 }) => {
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("md")
+  );
+  const splideRef = useRef<SplideClass | null>(null);
+
+  const goToSlide = (index: number) => {
+    splideRef.current?.go(index); // ✅ works perfectly
+  };
   return (
     <Stack spacing={2}>
-      {/* Main Image */}
       <Box
         sx={{
-          position: "relative",
-          border: "1px solid #e0e0e0",
+          border: `1px solid ${isMobile ? "#000" : "#e0e0e0"}`,
           borderRadius: 2,
           p: { xs: 1.5, md: 2 },
-          bgcolor: "background.paper",
+          bgcolor: "background.default",
+          boxShadow: isMobile
+            ? "0px 0px 12.48px 0px #0000001A"
+            : "0px 0px 25px 0px #0000001A",
         }}
       >
         <Splide
+          ref={splideRef}
+          className="main-product-carousel"
           options={{
             type: "slide",
             arrows: true,
@@ -39,13 +51,13 @@ const ProductImageCarousel: React.FC<ProductImageCarouselProps> = ({
               },
             },
           }}
+          key={2}
           aria-label="Main Product Images"
         >
           {images.map((img, idx) => (
             <SplideSlide key={idx}>
               <Box
                 sx={{
-                  position: "relative",
                   width: "100%",
                   height: { xs: 280, sm: 320, md: 400 },
                   display: "flex",
@@ -68,53 +80,44 @@ const ProductImageCarousel: React.FC<ProductImageCarouselProps> = ({
         </Splide>
       </Box>
 
-      {/* Thumbnails */}
-      <Box sx={{ px: 0.5 }}>
-        <Splide
-          options={{
-            fixedWidth: 80,
-            gap: "0.5rem",
-            rewind: true,
-            pagination: false,
-            isNavigation: true,
-            focus: "center",
-            arrows: false,
-            breakpoints: {
-              768: {
-                fixedWidth: 60,
-              },
-            },
-          }}
-          aria-label="Product Thumbnails"
-        >
+      {!isMobile && (
+        <Box sx={{ py: 0.5, display: "flex", justifyContent: "space-between" }}>
           {images.map((img, idx) => (
-            <SplideSlide key={`thumb-${idx}`}>
-              <Box
-                sx={{
-                  position: "relative",
-                  width: "80px",
-                  height: "60px",
-                  borderRadius: 1,
-                  border: "2px solid transparent",
-                  overflow: "hidden",
-                  cursor: "pointer",
-                  "&.is-active": {
-                    borderColor: "#04B1E9", // highlight active thumbnail
-                  },
-                }}
-                className="thumbnail-slide"
-              >
-                <Image
-                  src={img}
-                  alt={`Thumbnail ${idx + 1}`}
-                  fill
-                  style={{ objectFit: "cover" }}
-                />
-              </Box>
-            </SplideSlide>
+            <Box
+              key={`thumb-${idx}`}
+              onClick={() => goToSlide(idx)}
+              sx={{
+                width: "128px",
+                height: "128px",
+                borderRadius: "8px",
+                border: "none",
+                overflow: "hidden",
+                cursor: "pointer",
+                bgcolor: "background.default",
+                boxShadow: "0px 0px 31.07px 0px #0000001A",
+                padding: "20px",
+              }}
+            >
+              <Image
+                src={img}
+                alt={`Thumbnail ${idx + 1}`}
+                height={150}
+                width={150}
+              />
+            </Box>
           ))}
-        </Splide>
-      </Box>
+        </Box>
+      )}
+      <Typography
+        variant="h4"
+        color="primary.main"
+        sx={{
+          textDecoration: "underline",
+          cursor: "pointer",
+        }}
+      >
+        Watch more of this product
+      </Typography>
     </Stack>
   );
 };

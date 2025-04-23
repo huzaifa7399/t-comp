@@ -22,8 +22,15 @@ const SearchHeader = () => {
     >
       <IconButton
         sx={{
+          backgroundColor: isMobile
+            ? "background.default"
+            : "background.default",
+          borderRadius: "4px",
+          height: isMobile ? "40px" : "auto",
+          width: isMobile ? "40px" : "auto",
           gap: "8px",
           marginRight: isMobile ? "" : "40px",
+          boxShadow: isMobile ? "0px 0px 10.1px 0px #0000001A" : "",
         }}
       >
         <Image src="/back-icon.svg" alt="back icon" width={16} height={16} />

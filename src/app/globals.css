@@ -43,13 +43,13 @@ body {
   height: 16px;
 }
 
-/* .splide__arrow--prev {
-  left: -26px !important;
+.splide__arrow--prev {
+  left: 16px !important;
 }
 
 .splide__arrow--next {
-  right: -26px !important;
-} */
+  right: 16px !important;
+}
 
 @media screen and (min-width: 768px) {
   .splide__arrow {
@@ -80,4 +80,15 @@ body {
   .splide__arrow--next {
     right: -16px !important;
   }
+}
+
+.thumbnail-carousel > div > ul {
+  justify-content: space-between !important;
+}
+
+.thumbnail-carousel
+  .splide__track--nav
+  > .splide__list
+  > .splide__slide.is-active {
+  border: none !important;
 }
