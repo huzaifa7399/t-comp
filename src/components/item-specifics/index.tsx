@@ -1,49 +1,70 @@
 "use client";
-
 import React from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, Link } from "@mui/material";
 
-const specifics = [
-  { label: "Condition", value: "Used" },
-  { label: "Screen Size", value: "15.4 Inch" },
-  { label: "RAM", value: "16GB" },
-  { label: "Storage", value: "256GB SSD" },
-  { label: "CPU", value: "Intel Core i7" },
-  { label: "Weight", value: "2.4kg" },
-  // Add more if needed
-];
+interface ItemSpecific {
+  label: string;
+  value: string;
+}
+interface ItemSpecificsProps {
+  condition: string;
+  conditionDescription: string;
+  itemSpecifics: ItemSpecific[];
+}
 
-const ItemSpecifics: React.FC = () => {
+const ItemSpecifics: React.FC<ItemSpecificsProps> = ({
+  condition,
+  conditionDescription,
+  itemSpecifics,
+}) => {
   return (
-    <Box
-      mt={5}
-      p={3}
-      sx={{
-        border: "1px solid #e0e0e0",
-        borderRadius: 2,
-        bgcolor: "background.paper",
-      }}
-    >
-      <Typography
-        variant="subtitle2"
-        sx={{
-          mb: 2,
-          textTransform: "uppercase",
-          fontWeight: 600,
-          letterSpacing: 1,
-          color: "text.secondary",
-        }}
-      >
+    <Box>
+      <Typography variant="h6" fontWeight={700} mb={2}>
         Item specifics
       </Typography>
 
-      <Grid container spacing={2}>
-        {specifics.map((item, idx) => (
-          <Grid size={{ xs: 12, md: 6 }} key={idx}>
-            <Typography variant="body2" color="text.secondary">
-              <strong>{item.label}:</strong> {item.value}
-            </Typography>
-          </Grid>
+      <Box display="flex" alignItems="baseline" mb={2}>
+        <Typography variant="h4" color="#484848" sx={{ minWidth: 90 }}>
+          Condition
+        </Typography>
+        <Typography variant="h4" color="#000" sx={{ ml: 1 }}>
+          {condition} &nbsp;
+          <span style={{ color: "#000" }}>{conditionDescription}</span>
+          <Link
+            sx={{
+              ml: 1,
+              textDecoration: "underline",
+              cursor: "pointer",
+            }}
+          >
+            Read more
+          </Link>
+        </Typography>
+      </Box>
+      <Grid container spacing={1}>
+        {itemSpecifics.map((item, idx) => (
+          <React.Fragment key={idx}>
+            <Grid
+              size={{
+                xs: 6,
+                md: 5,
+              }}
+            >
+              <Typography variant="h4" color="#484848">
+                {item.label}
+              </Typography>
+            </Grid>
+            <Grid
+              size={{
+                xs: 6,
+                md: 7,
+              }}
+            >
+              <Typography variant="h4" color="#000">
+                {item.value}
+              </Typography>
+            </Grid>
+          </React.Fragment>
         ))}
       </Grid>
     </Box>

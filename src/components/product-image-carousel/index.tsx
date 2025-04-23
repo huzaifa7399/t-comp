@@ -1,11 +1,21 @@
 "use client";
 
 import React, { useRef } from "react";
-import { Box, Stack, Theme, Typography, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Link,
+  Stack,
+  Theme,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import type SplideClass from "@splidejs/splide";
 import Image from "next/image";
+import { sampleData } from "@/constants";
+import ProductCard from "../product-card";
 
 interface ProductImageCarouselProps {
   images: string[];
@@ -79,7 +89,6 @@ const ProductImageCarousel: React.FC<ProductImageCarouselProps> = ({
           ))}
         </Splide>
       </Box>
-
       {!isMobile && (
         <Box sx={{ py: 0.5, display: "flex", justifyContent: "space-between" }}>
           {images.map((img, idx) => (
@@ -118,6 +127,28 @@ const ProductImageCarousel: React.FC<ProductImageCarouselProps> = ({
       >
         Watch more of this product
       </Typography>
+      {!isMobile && (
+        <Stack gap={2}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            mt="20px"
+          >
+            <Typography variant="h4" fontWeight={700}>
+              Similar Items
+            </Typography>
+            <Link sx={{ textDecoration: "underline" }}>See all</Link>
+          </Stack>
+          <Grid container spacing={2}>
+            {sampleData.slice(0, 3).map((product, id) => (
+              <Grid size={{ xs: 12, sm: 6, md: 4, lg: 4 }} key={id}>
+                <ProductCard product={product} />
+              </Grid>
+            ))}
+          </Grid>
+        </Stack>
+      )}{" "}
     </Stack>
   );
 };

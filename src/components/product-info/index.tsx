@@ -145,7 +145,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
           sx={{
             borderRadius: "8px",
             backgroundColor: "#50D6921A",
-            padding: "16px 20px",
+            padding: isMobile ? "10px" : "16px 20px",
             display: "flex",
             flexDirection: "column",
             gap: "8px",

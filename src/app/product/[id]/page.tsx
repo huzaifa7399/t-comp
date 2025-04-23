@@ -1,12 +1,21 @@
 "use client";
 import React from "react";
-import { Box, Grid, Theme, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Link,
+  Stack,
+  Theme,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import ProductInfo from "@/components/product-info";
-import SellerInfo from "@/components/seller-info";
-import ItemSpecifics from "@/components/item-specifics";
-import Reviews from "@/components/reviews";
 import dynamic from "next/dynamic";
 import SearchHeader from "@/components/search-header";
+import Slider from "@/components/slider";
+import ItemDescriptionFromSeller from "@/components/item-description-from-seller";
+import ItemSpecifics from "@/components/item-specifics";
+import ReviewsSlider from "@/components/reviews-slider";
 
 const ProductImageCarousel = dynamic(
   () => import("@/components/product-image-carousel"),
@@ -50,6 +59,23 @@ const productData = {
       Shop risk-free with easy returns.
       `,
   },
+  itemSpecifics: [
+    { label: "Operation System version", value: "Windows 10 Pro" },
+    { label: "Display type", value: "Full HD" },
+    { label: "Screen Size", value: "15.54 Inch" },
+    { label: "Generation", value: "I5-10310U CPU @ 1.70GHZ" },
+    { label: "What's In the Box", value: "Laptop & Charger" },
+    { label: "Processor", value: "INTEL(R) CORE(TM) I5" },
+    { label: "Average Battery Life", value: "3-4 Hours" },
+    { label: "Keyboard Language", value: "English" },
+    { label: "Model Name", value: "Dell LATITUDE 3510" },
+    { label: "Serial No", value: "10321501780" },
+    { label: "Brand", value: "Dell" },
+    { label: "RAM", value: "16GB" },
+    { label: "Storage", value: "256GB" },
+  ],
+  conditionDescription:
+    "m has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Read more",
 };
 
 const ProductPage: React.FC = () => {
@@ -88,25 +114,83 @@ const ProductPage: React.FC = () => {
         </Grid>
       </Grid>
 
-      {/* Seller Info + Item Specifics */}
-      <Box mt={5}>
-        <Grid container spacing={4}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <SellerInfo
-              sellerName={productData.sellerName}
-              location={productData.location}
-              registrationDate={productData.registrationDate}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <ItemSpecifics />
-          </Grid>
-        </Grid>
-      </Box>
+      <Stack flexDirection={isMobile ? "column-reverse" : "column"}>
+        <Box mt="40px">
+          <Slider />
+        </Box>
+        <Box>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            mt={isMobile ? 3 : 0}
+          >
+            <Typography
+              variant="h4"
+              fontWeight={700}
+              sx={{
+                border: "1px solid #e5e5e5",
+                borderRadius: "3px",
+                p: "10px 12px",
+                maxWidth: "max-content",
+                bgcolor: isMobile ? "#fff" : "",
+                color: isMobile ? "#290064" : "",
+              }}
+            >
+              About this item
+            </Typography>
+            <Link sx={{ textDecoration: "underline" }}>Report this item</Link>
+          </Stack>
+          <Box
+            sx={{
+              border: isMobile ? "" : "1px solid #e5e5e5",
+              borderRadius: "3px",
+              mt: "24px",
+              p: "16px",
+            }}
+          >
+            <Stack
+              direction={isMobile ? "column" : "row"}
+              justifyContent="space-between"
+              alignItems={isMobile ? "start" : "center"}
+              mt={!isMobile ? 5 : 0}
+            >
+              <Typography variant="h4" color="#484848">
+                Seller assumes all responsibility for this listing.
+              </Typography>
 
-      {/* Reviews */}
+              <Typography variant="h4" color="#484848">
+                Serial Number:{" "}
+                <span
+                  style={{
+                    color: "#50D692",
+                    marginLeft: "10px",
+                  }}
+                >
+                  932840982
+                </span>
+              </Typography>
+            </Stack>
+            <Grid container spacing={4}>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <ItemSpecifics
+                  condition={productData.condition}
+                  conditionDescription={productData.conditionDescription}
+                  itemSpecifics={productData.itemSpecifics}
+                />
+              </Grid>
+              {!isMobile && (
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <ItemDescriptionFromSeller />
+                </Grid>
+              )}
+            </Grid>
+          </Box>
+        </Box>
+      </Stack>
+
       <Box mt={6}>
-        <Reviews />
+        <ReviewsSlider isMobile={isMobile} />
       </Box>
     </Box>
   );
