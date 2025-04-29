@@ -12,8 +12,10 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Footer: FC = () => {
+  const router = useRouter();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("md")
   );
@@ -142,10 +144,14 @@ const Footer: FC = () => {
           }}
         >
           <Image
+            onClick={() => router.push("/")}
             src="/t-comp-logo.svg"
             width={100}
             height={100}
             alt="t-comp-logo"
+            style={{
+              cursor: "pointer",
+            }}
           />
           <Typography variant="body2">contact@example.com</Typography>
           <Typography variant="body2">+1-541-754-3010</Typography>

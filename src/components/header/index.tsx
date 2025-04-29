@@ -11,18 +11,73 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
+import CartDrawer from "../cart-drawer";
+
+const cartItems = [
+  {
+    id: "1",
+    name: "ThinkPad T490s: Intel Core i7, 8th Gen, 16GB RAM, 256GB SSD",
+    image: "/sample-1.png",
+    price: 799,
+    attributes: ["i7 16GB - 256GB"],
+    color: "Black",
+    brand: "Lenovo",
+    quantity: 1,
+  },
+  {
+    id: "12",
+    name: "ThinkPad T490s: Intel Core i7, 8th Gen, 16GB RAM, 256GB SSD",
+    image: "/sample-1.png",
+    price: 799,
+    attributes: ["i7 16GB - 256GB"],
+    color: "Black",
+    brand: "Lenovo",
+    quantity: 1,
+  },
+  {
+    id: "123",
+    name: "ThinkPad T490s: Intel Core i7, 8th Gen, 16GB RAM, 256GB SSD",
+    image: "/sample-1.png",
+    price: 799,
+    attributes: ["i7 16GB - 256GB"],
+    color: "Black",
+    brand: "Lenovo",
+    quantity: 1,
+  },
+  {
+    id: "11",
+    name: "ThinkPad T490s: Intel Core i7, 8th Gen, 16GB RAM, 256GB SSD",
+    image: "/sample-1.png",
+    price: 799,
+    attributes: ["i7 16GB - 256GB"],
+    color: "Black",
+    brand: "Lenovo",
+    quantity: 1,
+  },
+];
 
 const Header: FC = () => {
-  const { isFilterOpen, handleFilterToggle } = useStore();
+  const router = useRouter();
+  const { isFilterOpen, handleFilterToggle, isLoggedIn } = useStore();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("md")
   );
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] =
     useState<boolean>(false);
 
   const handleMenuToggle = () => {
     setIsHamburgerMenuOpen((prev) => !prev);
+  };
+
+  const handleLogin = () => {
+    localStorage.setItem("accessToken", "dkisgay");
+  };
+
+  const handleCartClick = () => {
+    setIsCartOpen(!isCartOpen);
   };
 
   useEffect(() => {
@@ -54,10 +109,14 @@ const Header: FC = () => {
         }}
       >
         <Image
+          onClick={() => router.push("/")}
           src="/t-comp-logo.svg"
           width={100}
           height={100}
           alt="t-comp-logo"
+          style={{
+            cursor: "pointer",
+          }}
         />
 
         {!isMobile && (
@@ -108,24 +167,50 @@ const Header: FC = () => {
               />
               Support
             </Link>
-            <Link underline="none" color="text.secondary">
-              Log in
-            </Link>
-            <Link
-              underline="none"
-              sx={{
-                backgroundColor: "primary.main",
-                color: "white",
-                padding: "12px 32px",
-                borderRadius: "100px",
-                "&:hover": {
+            {!isLoggedIn && (
+              <Link
+                underline="none"
+                color="text.secondary"
+                onClick={handleLogin}
+              >
+                Log in
+              </Link>
+            )}{" "}
+            {!isLoggedIn ? (
+              <Link
+                underline="none"
+                sx={{
                   backgroundColor: "primary.main",
-                  opacity: 0.8,
-                },
-              }}
-            >
-              Create account
-            </Link>
+                  color: "white",
+                  padding: "12px 32px",
+                  borderRadius: "100px",
+                  "&:hover": {
+                    backgroundColor: "primary.main",
+                    opacity: 0.8,
+                  },
+                }}
+              >
+                Create account
+              </Link>
+            ) : (
+              <Link
+                sx={{
+                  display: "flex",
+                  gap: "2px",
+                }}
+                underline="none"
+                color="text.secondary"
+                onClick={handleCartClick}
+              >
+                <Image
+                  src="/cart-icon.svg"
+                  width={20}
+                  height={20}
+                  alt="avatar"
+                />
+                Cart
+              </Link>
+            )}
           </Stack>
         ) : (
           <Stack direction="row" spacing={"12px"} alignItems="center">
@@ -139,23 +224,43 @@ const Header: FC = () => {
                 />
               </Link>
             )}
-            {!isHamburgerMenuOpen && !isFilterOpen && (
-              <Link
-                underline="none"
-                sx={{
-                  backgroundColor: "primary.main",
-                  color: "white",
-                  padding: "5px 14px",
-                  borderRadius: "100px",
-                  "&:hover": {
+            {!isHamburgerMenuOpen &&
+              !isFilterOpen &&
+              (isLoggedIn ? (
+                <Link
+                  onClick={handleCartClick}
+                  sx={{
+                    display: "flex",
+                    gap: "2px",
+                    fontSize: "14px",
+                    color: "#252525",
+                  }}
+                >
+                  <Image
+                    src="/cart-icon.svg"
+                    width={20}
+                    height={20}
+                    alt="avatar"
+                  />
+                  Cart
+                </Link>
+              ) : (
+                <Link
+                  underline="none"
+                  sx={{
                     backgroundColor: "primary.main",
-                    opacity: 0.8,
-                  },
-                }}
-              >
-                Create account
-              </Link>
-            )}
+                    color: "white",
+                    padding: "5px 14px",
+                    borderRadius: "100px",
+                    "&:hover": {
+                      backgroundColor: "primary.main",
+                      opacity: 0.8,
+                    },
+                  }}
+                >
+                  Create account
+                </Link>
+              ))}
             <Link
               underline="none"
               onClick={isFilterOpen ? handleFilterToggle : handleMenuToggle}
@@ -188,14 +293,16 @@ const Header: FC = () => {
         >
           <Stack height="100%" justifyContent="space-between">
             <Stack spacing="16px" padding="12px 8px">
-              <Typography
-                variant="h4"
-                color="text.secondary"
-                textAlign="start"
-                fontWeight={700}
-              >
-                Log in
-              </Typography>
+              {!isLoggedIn && (
+                <Typography
+                  variant="h4"
+                  color="text.secondary"
+                  textAlign="start"
+                  fontWeight={700}
+                >
+                  Log in
+                </Typography>
+              )}
               <Typography variant="h4" color="text.secondary" textAlign="start">
                 Discover exclusive bidding at the our T-Comp bidding platform
               </Typography>
@@ -218,23 +325,31 @@ const Header: FC = () => {
                   />
                   Support
                 </Link>
-                <Link underline="none" color="text.secondary">
-                  Log in
-                </Link>
-                <Link
-                  underline="none"
-                  sx={{
-                    color: "text.secondary",
-                    padding: "7px 12px",
-                    borderRadius: "100px",
-                    border: "1px solid #B5B5B5",
-                    "&:hover": {
-                      opacity: 0.8,
-                    },
-                  }}
-                >
-                  Create account
-                </Link>
+                {!isLoggedIn && (
+                  <Link
+                    underline="none"
+                    color="text.secondary"
+                    onClick={handleLogin}
+                  >
+                    Log in
+                  </Link>
+                )}
+                {!isLoggedIn && (
+                  <Link
+                    underline="none"
+                    sx={{
+                      color: "text.secondary",
+                      padding: "7px 12px",
+                      borderRadius: "100px",
+                      border: "1px solid #B5B5B5",
+                      "&:hover": {
+                        opacity: 0.8,
+                      },
+                    }}
+                  >
+                    Create account
+                  </Link>
+                )}
               </Stack>
               <Divider
                 sx={{
@@ -290,6 +405,16 @@ const Header: FC = () => {
           </Stack>
         </Box>
       )}
+
+      <CartDrawer
+        open={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        items={cartItems}
+        subtotal={799}
+        onQuantityChange={(id, qty) => console.log(id, qty)}
+        onRemove={(id) => console.log("Remove", id)}
+        isMobile={isMobile}
+      />
     </Box>
   );
 };

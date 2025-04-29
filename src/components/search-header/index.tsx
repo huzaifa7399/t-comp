@@ -8,8 +8,10 @@ import {
 import React from "react";
 import SearchBar from "../search-bar";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const SearchHeader = () => {
+  const router = useRouter();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("md")
   );
@@ -21,6 +23,7 @@ const SearchHeader = () => {
       paddingBottom={isMobile ? "12px" : "56px"}
     >
       <IconButton
+        onClick={() => router.push("/")}
         sx={{
           backgroundColor: isMobile
             ? "background.default"
