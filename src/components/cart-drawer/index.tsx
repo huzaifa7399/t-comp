@@ -288,6 +288,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
           <Link
             onClick={() => {
               router.push("/cart");
+              onClose();
             }}
             underline="none"
             sx={{

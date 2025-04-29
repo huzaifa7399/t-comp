@@ -1,5 +1,12 @@
 "use client";
-import { Grid, Box, Pagination, useMediaQuery, Theme } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Pagination,
+  useMediaQuery,
+  Theme,
+  Typography,
+} from "@mui/material";
 import FilterSidebar from "@/components/filter-sidebar";
 import ProductCard from "@/components/product-card";
 import SearchBar from "@/components/search-bar";
@@ -27,6 +34,9 @@ export default function Home() {
         </Grid>
 
         <Grid size={{ xs: 12, md: 9 }}>
+          <Typography textAlign="center" variant="h1">
+            Dk is gay
+          </Typography>
           <Grid
             size={{ xs: 12 }}
             sx={{

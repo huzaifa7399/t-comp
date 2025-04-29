@@ -7,15 +7,11 @@ import {
   Paper,
   Typography,
   Stack,
-  IconButton,
-  Divider,
   Button,
   useMediaQuery,
   Theme,
-  TextField,
+  Divider,
 } from "@mui/material";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 const cartItems = [
   {
@@ -53,18 +49,17 @@ const CartPage: React.FC = () => {
   return (
     <Box
       sx={{
-        background: "#fafafa",
-        minHeight: "100vh",
         p: { xs: 1, sm: 2, md: 5 },
       }}
     >
       <Grid container spacing={4} justifyContent="center">
         {/* Cart Items */}
         <Grid size={{ xs: 12, md: 8 }}>
-          <Paper
+          <Box
             sx={{
               borderRadius: 2,
-              boxShadow: "0 4px 16px rgba(44, 62, 80, 0.04)",
+              boxShadow: isMobile ? "" : "0px 0px 26px 0px #1F2C3214",
+              bgcolor: isMobile ? "" : "#fff",
               p: { xs: 1, md: 3 },
             }}
           >
@@ -72,7 +67,7 @@ const CartPage: React.FC = () => {
               <Box key={item.id}>
                 <Grid container spacing={2} alignItems="center">
                   {/* Product Image */}
-                  <Grid size={{ xs: 3, sm: 2 }}>
+                  <Grid size={{ xs: 3, md: 2 }}>
                     <Box
                       component="img"
                       src={item.image}
@@ -126,64 +121,60 @@ const CartPage: React.FC = () => {
                   {/* Quantity and Remove */}
                   <Grid
                     size={{ xs: 12, sm: 3 }}
-                    sx={{ textAlign: { xs: "right", sm: "right" } }}
+                    sx={{
+                      textAlign: "right",
+                    }}
                   >
-                    <Stack
-                      direction="row"
-                      justifyContent="flex-end"
-                      alignItems="center"
-                      spacing={1}
-                    >
-                      <IconButton
-                        size="small"
-                        sx={{ border: "1px solid #ddd", borderRadius: 1 }}
-                      >
-                        <RemoveCircleOutlineIcon fontSize="small" />
-                      </IconButton>
-                      <TextField
-                        value={item.quantity}
-                        size="small"
-                        inputProps={{
-                          style: { textAlign: "center", width: 28 },
-                          min: 1,
-                        }}
+                    <Stack alignItems="flex-end">
+                      <Stack
+                        direction="row"
+                        alignItems="center"
                         sx={{
-                          width: 48,
-                          mx: 0.5,
-                          "& .MuiInputBase-root": { borderRadius: 1 },
+                          border: "1px solid #e0e0e0",
+                          borderRadius: 1,
+                          maxWidth: "max-content",
                         }}
-                        InputProps={{
-                          readOnly: true,
-                        }}
-                      />
-                      <IconButton
-                        size="small"
-                        sx={{ border: "1px solid #ddd", borderRadius: 1 }}
                       >
-                        <AddCircleOutlineIcon fontSize="small" />
-                      </IconButton>
+                        <Button
+                          size="small"
+                          disabled={item.quantity <= 1}
+                          sx={{ minWidth: 32 }}
+                        >
+                          –
+                        </Button>
+                        <Typography
+                          variant="body1"
+                          mx={1}
+                          minWidth={16}
+                          textAlign="center"
+                        >
+                          {item.quantity}
+                        </Typography>
+                        <Button size="small" sx={{ minWidth: 32 }}>
+                          +
+                        </Button>
+                      </Stack>
+                      <Button
+                        variant="text"
+                        sx={{
+                          mt: 1,
+                          fontSize: 13,
+                          textDecoration: "underline",
+                          textAlign: "right",
+                          minWidth: 0,
+                          p: 0,
+                          color: "#252525",
+                        }}
+                      >
+                        Remove
+                      </Button>
                     </Stack>
-                    <Button
-                      variant="text"
-                      color="inherit"
-                      sx={{
-                        mt: 1,
-                        fontSize: 13,
-                        textDecoration: "underline",
-                        textAlign: "right",
-                        minWidth: 0,
-                        p: 0,
-                        color: "#252525",
-                      }}
-                    >
-                      Remove
-                    </Button>
                   </Grid>
                 </Grid>
                 {idx !== cartItems.length - 1 && <Divider sx={{ my: 2 }} />}
               </Box>
             ))}
-          </Paper>
+          </Box>
         </Grid>
 
         {/* Cart Summary */}
@@ -193,14 +184,14 @@ const CartPage: React.FC = () => {
           flexDirection="column"
           alignItems="center"
         >
-          <Paper
+          <Box
             sx={{
               width: "100%",
-              p: { xs: 2, md: 3 },
+              p: { xs: 0, md: 3 },
               mt: isMobile ? 3 : 0,
               borderRadius: 6,
               boxShadow: "none",
-              background: "#fff",
+              background: isMobile ? "" : "#fff",
               minWidth: 260,
             }}
           >
@@ -246,6 +237,8 @@ const CartPage: React.FC = () => {
                 {subtotal.toFixed(2)}
               </Typography>
             </Stack>
+
+            {/* Primary CTA */}
             <Button
               variant="contained"
               fullWidth
@@ -266,7 +259,30 @@ const CartPage: React.FC = () => {
             >
               GO TO CHECKOUT
             </Button>
-          </Paper>
+
+            {/* Secondary CTA for mobile */}
+            {/* {isMobile && (
+              <Button
+                variant="outlined"
+                fullWidth
+                sx={{
+                  mt: 2,
+                  fontWeight: 600,
+                  fontSize: "1rem",
+                  borderRadius: "30px",
+                  py: 1.5,
+                  borderColor: "#04B1E9",
+                  color: "#04B1E9",
+                  "&:hover": {
+                    borderColor: "#04B1E9",
+                    backgroundColor: "#f0fbff",
+                  },
+                }}
+              >
+                GO TO CART
+              </Button>
+            )} */}
+          </Box>
         </Grid>
       </Grid>
     </Box>
